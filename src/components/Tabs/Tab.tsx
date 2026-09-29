@@ -11,10 +11,19 @@ export interface TabBadge {
   variant?: BadgeVariant;
 }
 
-export type TabProps = Omit<
-  ComponentProps<"button">,
-  "role" | "type" | "value" | "disabled" | "aria-selected" | "aria-controls" | "tabIndex"
-> & {
+// Attributes that wire the tab to its panel and drive roving focus are owned by
+// the component, so they are removed from the public props.
+type ManagedTabProps =
+  | "id"
+  | "role"
+  | "type"
+  | "value"
+  | "disabled"
+  | "aria-selected"
+  | "aria-controls"
+  | "tabIndex";
+
+export type TabProps = Omit<ComponentProps<"button">, ManagedTabProps> & {
   /** Unique value linking the tab to the `TabPanel` with the same value. */
   value: string;
   /** Tab label. */
@@ -41,6 +50,7 @@ export function Tab({ value, children, badge, className, onClick, onFocus, ...re
 
   return (
     <button
+      {...rest}
       type="button"
       role="tab"
       id={getTabId(value)}
@@ -51,9 +61,8 @@ export function Tab({ value, children, badge, className, onClick, onFocus, ...re
       className={cx(styles.tab, className)}
       onClick={handleClick}
       onFocus={handleFocus}
-      {...rest}
     >
-      <span className={styles.label}>{children}</span>
+      <span>{children}</span>
       {badge ? (
         <>
           {" "}

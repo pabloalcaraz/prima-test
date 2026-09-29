@@ -1,14 +1,37 @@
 @use "../../styles/breakpoints" as *;
 
+@mixin focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--ds-color-inverse);
+    outline-offset: 2px;
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
 .list {
   display: flex;
   overflow-x: auto;
-  scrollbar-width: none;
+  // Room for the focus ring (2px + 2px offset) so overflow doesn't clip it.
   padding: 4px;
   margin: -4px;
 
-  &::-webkit-scrollbar {
-    display: none;
+  // Touch users swipe the list, so the scrollbar stays hidden there. With a
+  // mouse there is no other obvious way to reach overflowing tabs, so a thin
+  // one is shown instead.
+  @media (pointer: coarse) {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  @media (pointer: fine) {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ds-color-outline) transparent;
   }
 
   &[data-variant="pill"] {
@@ -65,18 +88,7 @@
     transition: none;
   }
 
-  &:focus-visible {
-    outline: 2px solid var(--ds-color-inverse);
-    outline-offset: 2px;
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
-}
-
-.label {
-  display: inline-block;
+  @include focus-ring;
 }
 
 .tab[data-variant="pill"] {
@@ -153,12 +165,5 @@
 }
 
 .panel {
-  &:focus-visible {
-    outline: 2px solid var(--ds-color-inverse);
-    outline-offset: 2px;
-  }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
+  @include focus-ring;
 }

@@ -1,17 +1,13 @@
 @use "./styles/breakpoints" as *;
 
-// Placeholder grey for the skeleton content, matching the design mocks.
-$skeleton: #d9d9d9;
-
 .page {
-  min-height: 100vh;
-  background: var(--ds-color-surface);
-}
-
-.container {
-  max-width: 960px;
+  max-width: 60rem;
   margin-inline: auto;
   padding: var(--ds-space-xl) var(--ds-space-l);
+  color: var(--ds-color-on-neutral);
+  font-family: var(--ds-font-family-base);
+  font-size: var(--ds-font-body-m-size);
+  line-height: var(--ds-font-body-m-line-height);
 
   @include mobile {
     padding: var(--ds-space-l) var(--ds-space-s);
@@ -20,57 +16,20 @@ $skeleton: #d9d9d9;
 
 .heading {
   margin: 0 0 var(--ds-space-xl);
-  color: var(--ds-color-on-neutral);
-  font-family: var(--ds-font-family-base);
-  font-size: 1.5rem;
-  font-weight: var(--ds-font-weight-bold);
-}
-
-.block {
-  margin-bottom: var(--ds-space-xl);
-}
-
-.blockTitle {
-  margin: 0 0 var(--ds-space-m);
-  color: var(--ds-color-on-neutral);
-  font-family: var(--ds-font-family-base);
   font-size: var(--ds-font-body-m-size);
-  line-height: var(--ds-font-body-m-line-height);
   font-weight: var(--ds-font-weight-bold);
+}
+
+.title {
+  margin: 0 0 var(--ds-space-m);
+  font-size: inherit;
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.block + .block {
+  margin-top: var(--ds-space-2xl);
 }
 
 .panel {
   padding-block: var(--ds-space-m);
-}
-
-.rowList {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ds-space-2xs);
-}
-
-.skeletonRow {
-  height: 2.5rem;
-  background-color: $skeleton;
-  border-radius: var(--ds-radius-2xs);
-}
-
-.cardGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--ds-space-2xs);
-}
-
-.skeletonCard {
-  height: 6rem;
-  background-color: $skeleton;
-  border-radius: var(--ds-radius-2xs);
-}
-
-.placeholder {
-  margin: 0;
-  color: var(--ds-color-on-neutral);
-  font-family: var(--ds-font-family-base);
-  font-size: var(--ds-font-body-m-size);
-  line-height: var(--ds-font-body-m-line-height);
 }

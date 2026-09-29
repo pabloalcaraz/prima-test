@@ -54,11 +54,11 @@ export function TabList({ className, onKeyDown, ...rest }: TabListProps) {
 
   return (
     <div
+      {...rest}
       role="tablist"
       className={cx(styles.list, className)}
       data-variant={variant}
       onKeyDown={handleKeyDown}
-      {...rest}
     />
   );
 }

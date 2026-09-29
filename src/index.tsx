@@ -7,67 +7,49 @@ import { createRoot } from "react-dom/client";
 import { Tab, TabList, TabPanel, Tabs, type TabsVariant } from "./index.ts";
 import styles from "./playground.module.scss";
 
-const skeletonIds = ["a", "b", "c", "d", "e", "f"];
+const tabs = ["Emails", "Files", "Edits", "Downloads", "Documents"];
 
 function InboxDemo({ variant }: { variant: TabsVariant }) {
   return (
-    <Tabs variant={variant} defaultValue="emails">
-      <TabList aria-label={`Inbox (${variant})`}>
-        <Tab value="emails">Emails</Tab>
-        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-          Files
-        </Tab>
-        <Tab value="edits">Edits</Tab>
-        <Tab value="downloads">Downloads</Tab>
-        <Tab value="documents">Documents</Tab>
+    <Tabs variant={variant} defaultValue="Emails">
+      <TabList aria-label={`Inbox, ${variant} variant`}>
+        {tabs.map((tab) => (
+          <Tab
+            key={tab}
+            value={tab}
+            badge={tab === "Files" ? { label: "Warning", variant: "negative" } : undefined}
+          >
+            {tab}
+          </Tab>
+        ))}
       </TabList>
-      <TabPanel value="emails" className={styles.panel}>
-        <div className={styles.rowList}>
-          {skeletonIds.map((id) => (
-            <div key={`row-${id}`} className={styles.skeletonRow} />
-          ))}
-        </div>
-      </TabPanel>
-      <TabPanel value="files" className={styles.panel}>
-        <div className={styles.cardGrid}>
-          {skeletonIds.map((id) => (
-            <div key={`card-${id}`} className={styles.skeletonCard} />
-          ))}
-        </div>
-      </TabPanel>
-      <TabPanel value="edits" className={styles.panel}>
-        <p className={styles.placeholder}>Edits panel</p>
-      </TabPanel>
-      <TabPanel value="downloads" className={styles.panel}>
-        <p className={styles.placeholder}>Downloads panel</p>
-      </TabPanel>
-      <TabPanel value="documents" className={styles.panel}>
-        <p className={styles.placeholder}>Documents panel</p>
-      </TabPanel>
+      {tabs.map((tab) => (
+        <TabPanel key={tab} value={tab} className={styles.panel}>
+          {`${tab} content`}
+        </TabPanel>
+      ))}
     </Tabs>
   );
 }
 
 function Playground() {
   return (
-    <div className={styles.page}>
-      <main className={styles.container}>
-        <h1 className={styles.heading}>Switching tabs</h1>
-        <section className={styles.block}>
-          <h2 className={styles.blockTitle}>Pill</h2>
-          <InboxDemo variant="pill" />
+    <main className={styles.page}>
+      <h1 className={styles.heading}>Tabs Design System</h1>
+      {(["pill", "underline"] as const).map((variant) => (
+        <section key={variant} className={styles.block}>
+          <h2 className={styles.title}>{variant === "pill" ? "Pill" : "Underline"}</h2>
+          <InboxDemo variant={variant} />
         </section>
-        <section className={styles.block}>
-          <h2 className={styles.blockTitle}>Underline</h2>
-          <InboxDemo variant="underline" />
-        </section>
-      </main>
-    </div>
+      ))}
+    </main>
   );
 }
 
-const root = createRoot(document.getElementById("root") as HTMLElement);
-root.render(
+const container = document.getElementById("root");
+if (!container) throw new Error("Missing #root element in index.html");
+
+createRoot(container).render(
   <StrictMode>
     <Playground />
   </StrictMode>,

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import styles from "./Badge.stories.module.scss";
 import { Badge, type BadgeVariant } from "./Badge.tsx";
 
 const variants: BadgeVariant[] = ["neutral", "positive", "negative"];
@@ -33,9 +34,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
+// Docs-only overview; the Playground covers each variant in the sidebar.
 export const Variants: Story = {
+  tags: ["!dev"],
+  parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: "flex", gap: "var(--ds-space-2xs)" }}>
+    <div className={styles.row}>
       {variants.map((variant) => (
         <Badge key={variant} variant={variant}>
           {variant.charAt(0).toUpperCase() + variant.slice(1)}

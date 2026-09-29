@@ -162,6 +162,49 @@ describe("Tabs", () => {
     expect(within(filesTab).getByText("Warning")).toHaveAttribute("data-variant", "negative");
   });
 
+  it("applies the underline variant to the list and every tab", () => {
+    renderTabs({ variant: "underline" });
+
+    expect(screen.getByRole("tablist")).toHaveAttribute("data-variant", "underline");
+    for (const tab of screen.getAllByRole("tab")) {
+      expect(tab).toHaveAttribute("data-variant", "underline");
+    }
+  });
+
+  it("warns in development when the selected value matches no tab", () => {
+    const consoleWarn = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    renderTabs({ defaultValue: "missing" });
+
+    expect(consoleWarn).toHaveBeenCalledWith(
+      'Tabs: the selected value "missing" does not match any Tab.',
+    );
+    consoleWarn.mockRestore();
+  });
+
+  it("keeps the tab/panel wiring when a caller passes managed attributes at runtime", () => {
+    // Plain JS consumers are not stopped by the types, so the component must win.
+    const unsafeProps = { id: "custom-id" } as object;
+    render(
+      <Tabs defaultValue="emails">
+        <TabList aria-label="Inbox">
+          <Tab value="emails" {...unsafeProps}>
+            Emails
+          </Tab>
+        </TabList>
+        <TabPanel value="emails" {...unsafeProps}>
+          Emails panel
+        </TabPanel>
+      </Tabs>,
+    );
+
+    const tab = screen.getByRole("tab", { name: "Emails" });
+    const panel = screen.getByRole("tabpanel");
+    expect(tab.id).not.toBe("custom-id");
+    expect(tab).toHaveAttribute("aria-controls", panel.id);
+    expect(panel).toHaveAttribute("aria-labelledby", tab.id);
+  });
+
   it("throws a helpful error when a Tab is used outside Tabs", () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
 

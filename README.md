@@ -69,7 +69,9 @@ Units: spacing and font sizes are emitted in `rem` (px / 16), so layout
 scales with the user's root font size. Hairlines stay in pixels: the 1px
 pill border, the 2px focus ring, the 3px underline indicator, and radius
 values (radius describes a shape, not a length meant to scale with type
-size).
+size). Tab heights (50px, 42px on mobile) are component sizes taken from the
+design rather than spacing tokens, so they live as local custom properties in
+`Tabs.module.scss`.
 
 Breakpoint: `mobile` is `768`, defined once in `breakpoints.ts` and mirrored
 in `src/styles/_breakpoints.scss` (`$mobile-max`), since CSS custom
@@ -111,8 +113,13 @@ one of the two labeling props is present.
 | `badge` | `{ label: ReactNode; variant?: BadgeVariant }` | - | Renders a `Badge` after the label. |
 
 Plus native `button` props, minus the ones the component manages itself
-(`role`, `type`, `value`, `disabled`, `aria-selected`, `aria-controls`,
-`tabIndex`).
+(`id`, `role`, `type`, `value`, `disabled`, `aria-selected`, `aria-controls`,
+`tabIndex`). The managed attributes are also applied after any spread props,
+so plain JavaScript callers cannot override them either.
+
+Every `Tab` needs a unique `value`, and the selected value must match one of
+them. If it does not, no tab is focusable and every panel stays hidden, so
+`Tabs` logs a warning in development.
 
 ### `TabPanel`
 
@@ -120,7 +127,8 @@ Plus native `button` props, minus the ones the component manages itself
 | --- | --- | --- | --- |
 | `value` | `string` | - | Value of the `Tab` this panel belongs to. |
 
-Plus native `div` props.
+Plus native `div` props, minus the ones the component manages (`id`, `role`,
+`aria-labelledby`, `tabIndex`, `hidden`).
 
 ### `Badge`
 
@@ -197,8 +205,11 @@ Other decisions:
 "Mobile" is a CSS media query (`max-width: 768px`), not a component prop.
 Below that width, tabs shrink (height 50px -> 42px, tighter padding and
 gaps) and the badge gets smaller padding and radius. The tab list scrolls
-horizontally when tabs overflow (`overflow-x: auto`, scrollbar hidden), no
-scroll affordance yet (see Next steps).
+horizontally when tabs overflow. On touch screens the scrollbar is hidden and
+the list is swiped, as in the mobile design. With a mouse or trackpad
+(`pointer: fine`) a thin scrollbar is shown, because otherwise there is no
+obvious way to reach the hidden tabs. There is no scroll affordance such as
+arrows or an edge fade yet (see Next steps).
 
 ## Decisions and trade-offs
 
@@ -227,10 +238,10 @@ scroll affordance yet (see Next steps).
 
 ## Testing
 
-14 tests, `vitest` + Testing Library, no snapshots. Coverage is chosen for
+17 tests, `vitest` + Testing Library, no snapshots. Coverage is chosen for
 behavior, not line count.
 
-`Tabs.test.tsx` (10 tests):
+`Tabs.test.tsx` (13 tests):
 
 - ARIA wiring: tablist has its accessible name, every tab's `aria-controls`
   matches its panel's id, every panel's `aria-labelledby` matches its tab's
@@ -250,6 +261,10 @@ behavior, not line count.
   missing context.
 - `onValueChange` fires once per real selection change, and not again when
   focus/click lands on the tab that is already selected.
+- The `underline` variant reaches the list and every tab.
+- A selected value that matches no tab logs a development warning.
+- Passing `id` at runtime (bypassing the types) does not break the
+  tab/panel wiring.
 
 `Badge.test.tsx` (4 tests): renders its label, defaults to `neutral`, and
 applies `positive`/`negative` when passed.

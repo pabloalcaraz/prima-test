@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { expect, fn, userEvent, within } from "storybook/test";
+import { fn } from "storybook/test";
 import type { BadgeVariant } from "../Badge/index.ts";
 import { Tab } from "./Tab.tsx";
 import { TabList } from "./TabList.tsx";
@@ -8,7 +8,7 @@ import { TabPanel } from "./TabPanel.tsx";
 import styles from "./Tabs.stories.module.scss";
 import { Tabs, type TabsVariant } from "./Tabs.tsx";
 
-const variants: TabsVariant[] = ["pill", "underline"];
+const labels = ["Emails", "Files", "Edits", "Dashboard", "Messages", "Downloads", "Documents"];
 const badgeVariants: BadgeVariant[] = ["neutral", "positive", "negative"];
 
 const keyboardTable = `
@@ -21,67 +21,87 @@ const keyboardTable = `
 | End | Moves focus to the last tab |
 `;
 
-// Typed with an annotation rather than `satisfies`: TabsProps is a union with
-// required children, which would force every story to provide dummy args.
-const meta: Meta<typeof Tabs> = {
+interface PlaygroundArgs {
+  variant: TabsVariant;
+  tabCount: number;
+  badge: boolean;
+  badgeLabel: string;
+  badgeVariant: BadgeVariant;
+}
+
+const meta = {
   title: "Components/Tabs",
-  component: Tabs,
   tags: ["autodocs"],
   parameters: {
     docs: {
       description: {
-        component: `Tabs follow the WAI-ARIA APG tabs pattern with automatic activation: moving focus with the keyboard also selects the tab, matching how a mouse click behaves. Panels stay mounted (hidden via the \`hidden\` attribute) so every \`aria-controls\` reference always resolves.\n\n${keyboardTable}`,
+        component: `Tabs follow the WAI-ARIA APG tabs pattern with automatic activation: moving focus with the keyboard also selects the tab, matching how a mouse click behaves. Panels stay mounted (hidden via the \`hidden\` attribute) so every \`aria-controls\` reference always resolves.\n\nUse the controls below to switch variants and add a badge to a tab. Below 768px the component switches to its mobile size; resize the browser or use the viewport toolbar to see it.\n\n${keyboardTable}`,
       },
     },
   },
-  subcomponents: { TabList, Tab, TabPanel },
-};
-
-export default meta;
-
-type Story = StoryObj<typeof Tabs>;
-
-interface PlaygroundArgs {
-  variant: TabsVariant;
-  tabCount: number;
-  withBadge: boolean;
-  badgeVariant: BadgeVariant;
-  badgeLabel: string;
-}
-
-export const Playground: StoryObj<PlaygroundArgs> = {
   argTypes: {
-    variant: { options: variants, control: { type: "select" } },
-    tabCount: { control: { type: "range", min: 1, max: 8, step: 1 } },
-    withBadge: { control: { type: "boolean" } },
-    badgeVariant: { options: badgeVariants, control: { type: "select" } },
-    badgeLabel: { control: { type: "text" } },
+    variant: {
+      description: "`Tabs` prop. Visual style shared by every tab in the group.",
+      options: ["pill", "underline"] satisfies TabsVariant[],
+      control: { type: "inline-radio" },
+      table: { defaultValue: { summary: "pill" } },
+    },
+    tabCount: {
+      description: "Number of tabs in the example. Add enough to see the list scroll.",
+      control: { type: "range", min: 2, max: labels.length, step: 1 },
+    },
+    badge: {
+      description: "Shows a badge on the second tab through the `Tab` `badge` prop.",
+      control: { type: "boolean" },
+    },
+    badgeLabel: {
+      description: "`badge.label` on the `Tab`.",
+      control: { type: "text" },
+      if: { arg: "badge" },
+    },
+    badgeVariant: {
+      description: "`badge.variant` on the `Tab`.",
+      options: badgeVariants,
+      control: { type: "inline-radio" },
+      table: { defaultValue: { summary: "neutral" } },
+      if: { arg: "badge" },
+    },
   },
   args: {
     variant: "pill",
-    tabCount: 4,
-    withBadge: false,
-    badgeVariant: "neutral",
-    badgeLabel: "New",
+    tabCount: 5,
+    badge: true,
+    badgeLabel: "Warning",
+    badgeVariant: "negative",
   },
-  render: ({ variant, tabCount, withBadge, badgeVariant, badgeLabel }) => {
-    const tabs = Array.from({ length: tabCount }, (_, index) => `tab-${index + 1}`);
+} satisfies Meta<PlaygroundArgs>;
+
+export default meta;
+
+type Story = StoryObj<PlaygroundArgs>;
+
+export const Playground: Story = {
+  render: ({ variant, tabCount, badge, badgeLabel, badgeVariant }) => {
+    const visible = labels.slice(0, tabCount);
     return (
-      <Tabs variant={variant} defaultValue={tabs[0]}>
-        <TabList aria-label="Playground tabs">
-          {tabs.map((value, index) => (
+      // Remount when the tab set changes so the default selection always exists.
+      <Tabs key={tabCount} variant={variant} defaultValue={visible[0]}>
+        <TabList aria-label="Inbox">
+          {visible.map((label, index) => (
             <Tab
-              key={value}
-              value={value}
-              badge={withBadge ? { label: badgeLabel, variant: badgeVariant } : undefined}
+              key={label}
+              value={label}
+              badge={
+                badge && index === 1 ? { label: badgeLabel, variant: badgeVariant } : undefined
+              }
             >
-              {`Label ${index + 1}`}
+              {label}
             </Tab>
           ))}
         </TabList>
-        {tabs.map((value, index) => (
-          <TabPanel key={value} value={value} className={styles.panelContent}>
-            <p className={styles.placeholder}>{`Content for label ${index + 1}`}</p>
+        {visible.map((label) => (
+          <TabPanel key={label} value={label} className={styles.panel}>
+            {`${label} content`}
           </TabPanel>
         ))}
       </Tabs>
@@ -89,267 +109,78 @@ export const Playground: StoryObj<PlaygroundArgs> = {
   },
 };
 
-export const Pill: Story = {
-  render: () => (
-    <Tabs variant="pill" defaultValue="one">
-      <TabList aria-label="Pill tabs">
-        <Tab value="one">Label</Tab>
-        <Tab value="two">Label</Tab>
-        <Tab value="three">Label</Tab>
-        <Tab value="four">Label</Tab>
-        <Tab value="five">Label</Tab>
-      </TabList>
-      <TabPanel value="one" className={styles.panelContent}>
-        Panel one
-      </TabPanel>
-      <TabPanel value="two" className={styles.panelContent}>
-        Panel two
-      </TabPanel>
-      <TabPanel value="three" className={styles.panelContent}>
-        Panel three
-      </TabPanel>
-      <TabPanel value="four" className={styles.panelContent}>
-        Panel four
-      </TabPanel>
-      <TabPanel value="five" className={styles.panelContent}>
-        Panel five
-      </TabPanel>
-    </Tabs>
-  ),
-};
-
-export const Underline: Story = {
-  render: () => (
-    <Tabs variant="underline" defaultValue="one">
-      <TabList aria-label="Underline tabs">
-        <Tab value="one">Label</Tab>
-        <Tab value="two">Label</Tab>
-        <Tab value="three">Label</Tab>
-        <Tab value="four">Label</Tab>
-        <Tab value="five">Label</Tab>
-      </TabList>
-      <TabPanel value="one" className={styles.panelContent}>
-        Panel one
-      </TabPanel>
-      <TabPanel value="two" className={styles.panelContent}>
-        Panel two
-      </TabPanel>
-      <TabPanel value="three" className={styles.panelContent}>
-        Panel three
-      </TabPanel>
-      <TabPanel value="four" className={styles.panelContent}>
-        Panel four
-      </TabPanel>
-      <TabPanel value="five" className={styles.panelContent}>
-        Panel five
-      </TabPanel>
-    </Tabs>
-  ),
-};
-
-export const WithBadge: Story = {
-  render: () => (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--ds-space-l)" }}>
-      {variants.map((variant) => (
-        <Tabs key={variant} variant={variant} defaultValue="emails">
-          <TabList aria-label={`${variant} tabs with badges`}>
-            <Tab value="emails">Emails</Tab>
-            <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-              Files
-            </Tab>
-            <Tab value="edits">Edits</Tab>
-            <Tab value="dashboard">Dashboard</Tab>
-            <Tab value="messages">Messages</Tab>
-          </TabList>
-          <TabPanel value="emails" className={styles.panelContent}>
-            Emails panel
-          </TabPanel>
-          <TabPanel value="files" className={styles.panelContent}>
-            Files panel
-          </TabPanel>
-          <TabPanel value="edits" className={styles.panelContent}>
-            Edits panel
-          </TabPanel>
-          <TabPanel value="dashboard" className={styles.panelContent}>
-            Dashboard panel
-          </TabPanel>
-          <TabPanel value="messages" className={styles.panelContent}>
-            Messages panel
-          </TabPanel>
-        </Tabs>
-      ))}
-    </div>
-  ),
-};
-
 export const BadgeVariants: Story = {
+  parameters: { controls: { disable: true } },
   render: () => (
     <Tabs variant="pill" defaultValue="neutral">
-      <TabList aria-label="Tabs with every badge variant">
-        <Tab value="neutral" badge={{ label: "Neutral", variant: "neutral" }}>
-          Neutral
-        </Tab>
-        <Tab value="positive" badge={{ label: "Positive", variant: "positive" }}>
-          Positive
-        </Tab>
-        <Tab value="negative" badge={{ label: "Negative", variant: "negative" }}>
-          Negative
-        </Tab>
+      <TabList aria-label="Badge variants">
+        {badgeVariants.map((variant) => (
+          <Tab key={variant} value={variant} badge={{ label: "Badge", variant }}>
+            {variant.charAt(0).toUpperCase() + variant.slice(1)}
+          </Tab>
+        ))}
       </TabList>
-      <TabPanel value="neutral" className={styles.panelContent}>
-        Neutral panel
-      </TabPanel>
-      <TabPanel value="positive" className={styles.panelContent}>
-        Positive panel
-      </TabPanel>
-      <TabPanel value="negative" className={styles.panelContent}>
-        Negative panel
-      </TabPanel>
+      {badgeVariants.map((variant) => (
+        <TabPanel key={variant} value={variant} className={styles.panel}>
+          {`Tab with a ${variant} badge`}
+        </TabPanel>
+      ))}
     </Tabs>
   ),
 };
 
-function ControlledDemo({ onValueChange }: { onValueChange: (value: string) => void }) {
-  const [value, setValue] = useState("emails");
-  const tabs = ["emails", "files", "edits"];
+function ControlledExample({ onValueChange }: { onValueChange: (value: string) => void }) {
+  const [value, setValue] = useState("Emails");
+  const options = labels.slice(0, 3);
 
-  const handleChange = (next: string) => {
+  const select = (next: string) => {
     setValue(next);
     onValueChange(next);
   };
 
   return (
-    <div>
-      <div className={styles.controlledBar}>
-        {tabs.map((tab) => (
+    <>
+      <div className={styles.controls}>
+        {options.map((option) => (
           <button
-            key={tab}
+            key={option}
             type="button"
-            className={styles.controlledButton}
-            onClick={() => handleChange(tab)}
+            className={styles.button}
+            onClick={() => select(option)}
           >
-            {`Select ${tab}`}
+            {`Select ${option}`}
           </button>
         ))}
       </div>
-      <Tabs variant="pill" value={value} onValueChange={handleChange}>
+      <Tabs variant="pill" value={value} onValueChange={select}>
         <TabList aria-label="Controlled tabs">
-          <Tab value="emails">Emails</Tab>
-          <Tab value="files">Files</Tab>
-          <Tab value="edits">Edits</Tab>
+          {options.map((option) => (
+            <Tab key={option} value={option}>
+              {option}
+            </Tab>
+          ))}
         </TabList>
-        <TabPanel value="emails" className={styles.panelContent}>
-          Emails panel
-        </TabPanel>
-        <TabPanel value="files" className={styles.panelContent}>
-          Files panel
-        </TabPanel>
-        <TabPanel value="edits" className={styles.panelContent}>
-          Edits panel
-        </TabPanel>
+        {options.map((option) => (
+          <TabPanel key={option} value={option} className={styles.panel}>
+            {`${option} content`}
+          </TabPanel>
+        ))}
       </Tabs>
-    </div>
+    </>
   );
 }
 
 export const Controlled: StoryObj<{ onValueChange: (value: string) => void }> = {
-  args: {
-    onValueChange: fn(),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story:
+          "The parent owns the selected value through `value` and `onValueChange`, so it can also change the tab from outside.",
+      },
+    },
   },
-  render: ({ onValueChange }) => <ControlledDemo onValueChange={onValueChange} />,
-};
-
-const skeletonIds = ["a", "b", "c", "d", "e", "f"];
-
-function SwitchingContentDemo({ variant }: { variant: TabsVariant }) {
-  return (
-    <Tabs variant={variant} defaultValue="emails">
-      <TabList aria-label="Inbox">
-        <Tab value="emails">Emails</Tab>
-        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-          Files
-        </Tab>
-        <Tab value="edits">Edits</Tab>
-        <Tab value="downloads">Downloads</Tab>
-        <Tab value="documents">Documents</Tab>
-      </TabList>
-      <TabPanel value="emails" className={styles.panelContent}>
-        <div className={styles.rowList}>
-          {skeletonIds.map((id) => (
-            <div key={`row-${id}`} className={styles.skeletonRow} />
-          ))}
-        </div>
-      </TabPanel>
-      <TabPanel value="files" className={styles.panelContent}>
-        <div className={styles.cardGrid}>
-          {skeletonIds.map((id) => (
-            <div key={`card-${id}`} className={styles.skeletonCard} />
-          ))}
-        </div>
-      </TabPanel>
-      <TabPanel value="edits" className={styles.panelContent}>
-        <p className={styles.placeholder}>Edits panel</p>
-      </TabPanel>
-      <TabPanel value="downloads" className={styles.panelContent}>
-        <p className={styles.placeholder}>Downloads panel</p>
-      </TabPanel>
-      <TabPanel value="documents" className={styles.panelContent}>
-        <p className={styles.placeholder}>Documents panel</p>
-      </TabPanel>
-    </Tabs>
-  );
-}
-
-export const SwitchingContent: Story = {
-  render: () => <SwitchingContentDemo variant="pill" />,
-};
-
-// Viewport globals only apply on the story page, not inline in the docs page.
-export const Mobile: Story = {
-  tags: ["!autodocs"],
-  globals: {
-    viewport: { value: "mobile1", isRotated: false },
-  },
-  render: () => <SwitchingContentDemo variant="pill" />,
-};
-
-// Kept out of the docs page so its play function doesn't steal focus there.
-export const Keyboard: Story = {
-  tags: ["!autodocs"],
-  render: () => (
-    <Tabs variant="pill" defaultValue="one">
-      <TabList aria-label="Keyboard demo tabs">
-        <Tab value="one">One</Tab>
-        <Tab value="two">Two</Tab>
-        <Tab value="three">Three</Tab>
-      </TabList>
-      <TabPanel value="one" className={styles.panelContent}>
-        Panel one
-      </TabPanel>
-      <TabPanel value="two" className={styles.panelContent}>
-        Panel two
-      </TabPanel>
-      <TabPanel value="three" className={styles.panelContent}>
-        Panel three
-      </TabPanel>
-    </Tabs>
-  ),
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const first = canvas.getByRole("tab", { name: "One" });
-    const second = canvas.getByRole("tab", { name: "Two" });
-
-    first.focus();
-    await expect(first).toHaveFocus();
-    await expect(first).toHaveAttribute("aria-selected", "true");
-
-    await userEvent.keyboard("{ArrowRight}");
-    await expect(second).toHaveFocus();
-    await expect(second).toHaveAttribute("aria-selected", "true");
-    await expect(canvas.getByText("Panel two")).toBeVisible();
-
-    await userEvent.keyboard("{ArrowLeft}");
-    await expect(first).toHaveFocus();
-    await expect(first).toHaveAttribute("aria-selected", "true");
-  },
+  args: { onValueChange: fn() },
+  argTypes: { onValueChange: { table: { disable: true } } },
+  render: ({ onValueChange }) => <ControlledExample onValueChange={onValueChange} />,
 };
