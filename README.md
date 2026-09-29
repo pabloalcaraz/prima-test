@@ -4,7 +4,7 @@ A `Tabs` component with pill and underline variants, plus a standalone `Badge`
 component that can be attached to a tab. Built for the Prima front-end
 take-home test.
 
-Live Storybook: TODO (GitHub Pages link added after first deploy)
+Live Storybook: https://pabloalcaraz.github.io/prima-test/
 
 ## Getting started
 
