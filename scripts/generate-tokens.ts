@@ -1,6 +1,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { color } from "../src/tokens/color.ts";
+import { cssVar, pxToRem } from "../src/tokens/naming.ts";
 import { palette } from "../src/tokens/palette.ts";
 import { radius } from "../src/tokens/radius.ts";
 import { spacing } from "../src/tokens/spacing.ts";
@@ -8,46 +9,32 @@ import { fontFamily, fontWeight, text } from "../src/tokens/typography.ts";
 
 const OUTPUT_PATH = resolve(import.meta.dirname, "../src/styles/tokens.css");
 
-function camelToKebab(value: string): string {
-  return value.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`);
-}
-
-// px -> rem (base 16px), trimmed of trailing zeros. Zero stays unitless.
-function toRem(px: number): string {
-  if (px === 0) return "0";
-  const rem = Number((px / 16).toFixed(4));
-  return `${rem}rem`;
-}
-
 function buildDeclarations(): string[] {
   const lines: string[] = [];
 
   for (const [key, value] of Object.entries(palette)) {
-    lines.push(`  --ds-palette-${camelToKebab(key)}: ${value.toLowerCase()};`);
+    lines.push(`  ${cssVar("palette", key)}: ${value.toLowerCase()};`);
   }
 
   for (const [key, primitiveKey] of Object.entries(color)) {
-    lines.push(
-      `  --ds-color-${camelToKebab(key)}: var(--ds-palette-${camelToKebab(primitiveKey)});`,
-    );
+    lines.push(`  ${cssVar("color", key)}: var(${cssVar("palette", primitiveKey)});`);
   }
 
   for (const [key, value] of Object.entries(spacing)) {
-    lines.push(`  --ds-space-${camelToKebab(key)}: ${toRem(value)};`);
+    lines.push(`  ${cssVar("space", key)}: ${pxToRem(value)};`);
   }
 
   // Radius stays in px: `full` (100) is a "pill" shape hint, not a real
   // length meant to scale with the user's root font size like spacing/type.
   for (const [key, value] of Object.entries(radius)) {
-    lines.push(`  --ds-radius-${camelToKebab(key)}: ${value}px;`);
+    lines.push(`  ${cssVar("radius", key)}: ${value}px;`);
   }
 
-  lines.push(`  --ds-font-family-base: ${fontFamily.base};`);
-  lines.push(`  --ds-font-weight-bold: ${fontWeight.bold};`);
+  lines.push(`  ${cssVar("font", "family-base")}: ${fontFamily.base};`);
+  lines.push(`  ${cssVar("font", "weight-bold")}: ${fontWeight.bold};`);
   for (const [key, style] of Object.entries(text)) {
-    const name = camelToKebab(key);
-    lines.push(`  --ds-font-${name}-size: ${toRem(style.fontSize)};`);
-    lines.push(`  --ds-font-${name}-line-height: ${style.lineHeight};`);
+    lines.push(`  ${cssVar("font", `${key}-size`)}: ${pxToRem(style.fontSize)};`);
+    lines.push(`  ${cssVar("font", `${key}-line-height`)}: ${style.lineHeight};`);
   }
 
   return lines;

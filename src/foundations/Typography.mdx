@@ -1,0 +1,63 @@
+import { Meta, Typeset } from "@storybook/addon-docs/blocks";
+import { cssVar, fontFamily, fontWeight, pxToRem, text } from "../tokens/index.ts";
+import styles from "./foundations.module.scss";
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+<div className={styles.intro}>
+  Inter is bundled with the app through `@fontsource-variable/inter`, so no request
+  goes to Google Fonts. Components use two sizes, both with a 150% line height and
+  weight 700.
+</div>
+
+<Typeset
+  fontFamily={fontFamily.base}
+  fontSizes={[text.bodyM.fontSize]}
+  fontWeight={fontWeight.bold}
+  sampleText="Body M, used for tab labels"
+/>
+
+<Typeset
+  fontFamily={fontFamily.base}
+  fontSizes={[text.bodyS.fontSize]}
+  fontWeight={fontWeight.bold}
+  sampleText="Body S, used for badge labels"
+/>
+
+## Tokens
+
+<table className={styles.table}>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Size</th>
+      <th>Line height</th>
+      <th>CSS variables</th>
+    </tr>
+  </thead>
+  <tbody>
+    {Object.entries(text).map(([key, style]) => (
+      <tr key={key}>
+        <td>
+          <code>{key}</code>
+        </td>
+        <td>
+          {style.fontSize}px / {pxToRem(style.fontSize)}
+        </td>
+        <td>{Math.round(style.lineHeight * 100)}%</td>
+        <td>
+          <code>{cssVar("font", `${key}-size`)}</code>
+          <br />
+          <code>{cssVar("font", `${key}-line-height`)}</code>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<div className={styles.note}>
+  Font family: <code>{cssVar("font", "family-base")}</code>. Weight:{" "}
+  <code>{cssVar("font", "weight-bold")}</code> ({fontWeight.bold}).
+</div>

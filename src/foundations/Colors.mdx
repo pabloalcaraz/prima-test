@@ -1,0 +1,58 @@
+import { ColorItem, ColorPalette, Meta } from "@storybook/addon-docs/blocks";
+import { color, cssVar, palette } from "../tokens/index.ts";
+import styles from "./foundations.module.scss";
+
+export const groupBy = (keys, getGroup) =>
+  keys.reduce((groups, key) => {
+    const group = getGroup(key);
+    groups[group] = [...(groups[group] ?? []), key];
+    return groups;
+  }, {});
+
+export const paletteGroups = groupBy(Object.keys(palette), (key) => key.replace(/\d+$/, ""));
+export const semanticGroups = groupBy(Object.keys(color), (key) => key.split(/(?=[A-Z])/)[0]);
+
+<Meta title="Foundations/Colors" />
+
+# Colors
+
+<div className={styles.intro}>
+  Colors come in two layers. **Primitives** are raw values with no meaning attached.
+  **Semantic** tokens describe a role (`inverse`, `surfaceHover`, `outline`) and point
+  to a primitive. Components only use semantic tokens, so remapping a role is a
+  one-line change in `color.ts`.
+</div>
+
+## Palette
+
+<ColorPalette>
+  {Object.entries(paletteGroups).map(([group, keys]) => (
+    <ColorItem
+      key={group}
+      title={group}
+      subtitle={cssVar("palette", `${group}*`)}
+      colors={Object.fromEntries(keys.map((key) => [key, palette[key]]))}
+    />
+  ))}
+</ColorPalette>
+
+## Semantic
+
+<div className={styles.intro}>
+  Names match the Figma file. Each token is exposed as a CSS variable, for example
+  `inverseHover` becomes <code>{cssVar("color", "inverseHover")}</code>. The primitive behind each
+  token is listed under its swatch.
+</div>
+
+<ColorPalette>
+  {Object.entries(semanticGroups).map(([group, keys]) => (
+    <ColorItem
+      key={group}
+      title={group}
+      subtitle={`${cssVar("color", group)}*`}
+      colors={Object.fromEntries(
+        keys.map((key) => [`${key} (${color[key]})`, palette[color[key]]]),
+      )}
+    />
+  ))}
+</ColorPalette>

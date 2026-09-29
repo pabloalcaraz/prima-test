@@ -1,0 +1,29 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+import { breakpoints } from "../tokens/index.ts";
+import styles from "./foundations.module.scss";
+import { RadiusScale } from "./RadiusScale.tsx";
+import { SpacingScale } from "./SpacingScale.tsx";
+
+<Meta title="Foundations/Spacing" />
+
+# Spacing
+
+<div className={styles.intro}>
+  One scale covers every gap and padding in the system. The bars below are sized
+  with the CSS variables themselves, so the table always shows real values.
+</div>
+
+<SpacingScale />
+
+## Radius
+
+<RadiusScale />
+
+## Breakpoint
+
+<div className={styles.note}>
+  Mobile layout applies at viewport widths of{" "}
+  <code>{breakpoints.mobile}px</code> and below, via a{" "}
+  <code>max-width: {breakpoints.mobile}px</code> media query. It is not a component
+  prop.
+</div>

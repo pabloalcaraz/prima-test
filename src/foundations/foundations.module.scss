@@ -1,0 +1,37 @@
+.intro {
+  max-width: 640px;
+  font-size: var(--ds-font-body-m-size);
+  line-height: var(--ds-font-body-m-line-height);
+  color: var(--ds-color-on-neutral);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ds-font-body-m-size);
+  line-height: var(--ds-font-body-m-line-height);
+  color: var(--ds-color-on-neutral);
+}
+
+.table th,
+.table td {
+  padding: var(--ds-space-2xs) var(--ds-space-s);
+  text-align: left;
+  border-bottom: 1px solid var(--ds-color-outline);
+}
+
+.table th {
+  font-weight: var(--ds-font-weight-bold);
+}
+
+.table code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  font-size: 0.9em;
+}
+
+.note {
+  margin-top: var(--ds-space-m);
+  font-size: var(--ds-font-body-s-size);
+  line-height: var(--ds-font-body-s-line-height);
+  color: var(--ds-color-on-neutral);
+}
