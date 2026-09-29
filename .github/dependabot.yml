@@ -7,9 +7,21 @@ updates:
     default-days: 7
   directories:
   - '*'
+  groups:
+    dependencies:
+      patterns:
+      - '*'
+  ignore:
+  # Node types must follow the Node major the project runs on (engines: >=24).
+  - dependency-name: '@types/node'
+    update-types: ['version-update:semver-major']
 - package-ecosystem: github-actions
   schedule:
     interval: weekly
   cooldown:
     default-days: 7
   directory: /
+  groups:
+    actions:
+      patterns:
+      - '*'
