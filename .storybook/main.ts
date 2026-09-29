@@ -7,6 +7,14 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
+  core: {
+    disableTelemetry: true,
+    disableWhatsNewNotifications: true,
+  },
+  features: {
+    sidebarOnboardingChecklist: false,
+    menuOnboardingChecklist: false,
+  },
   viteFinal: (viteConfig) => ({
     ...viteConfig,
     server: {
