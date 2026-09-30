@@ -78,12 +78,13 @@ CSS custom properties can't be used inside a media query.
 | `variant` | `"pill" \| "underline"` | `"pill"` | Visual style applied to every tab in the group. |
 | `value` | `string` | - | Selected tab, for controlled usage. Pair it with `onValueChange`. Excludes `defaultValue`. |
 | `defaultValue` | `string` | - | Initial tab, for uncontrolled usage. Excludes `value`. |
-| `onValueChange` | `(value: string) => void` | - | Called when the user selects a different tab. |
+| `onValueChange` | `(value: string) => void` | - | Called when the user selects a different tab. Required with `value`. |
 | `className` | `string` | - | Extra class for the root element. |
 | `children` | `ReactNode` | - | `TabList` and `TabPanel` elements. |
 
 `value`/`defaultValue` are a discriminated union: TypeScript requires exactly
-one of the two.
+one of the two, and `value` also requires `onValueChange`, so controlled tabs
+can't silently freeze.
 
 ### `TabList`
 
@@ -101,7 +102,7 @@ Omitting both labeling props is a compile error.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | `string` | - | Links this tab to the `TabPanel` with the same value. |
-| `children` | `ReactNode` | - | Tab label. |
+| `label` | `string` | - | Tab label. Plain string only: the tab is a `button`, so interactive content inside it would be invalid. |
 | `badge` | `{ label: string; variant?: BadgeVariant }` | - | Renders a `Badge` after the label. |
 | `className` | `string` | - | Extra class for the tab. |
 

@@ -19,10 +19,8 @@ import { Tab, TabList, TabPanel, Tabs } from "fe-interview-design-system";
 
 <Tabs defaultValue="emails">
   <TabList aria-label="Inbox">
-    <Tab value="emails">Emails</Tab>
-    <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-      Files
-    </Tab>
+    <Tab value="emails" label="Emails" />
+    <Tab value="files" label="Files" badge={{ label: "Warning", variant: "negative" }} />
   </TabList>
   <TabPanel value="emails">Emails content</TabPanel>
   <TabPanel value="files">Files content</TabPanel>

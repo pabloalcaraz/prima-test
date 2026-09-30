@@ -91,12 +91,11 @@ export const Playground: Story = {
             <Tab
               key={label}
               value={label}
+              label={label}
               badge={
                 badge && index === 1 ? { label: badgeLabel, variant: badgeVariant } : undefined
               }
-            >
-              {label}
-            </Tab>
+            />
           ))}
         </TabList>
         {visible.map((label) => (
@@ -115,9 +114,12 @@ export const BadgeVariants: Story = {
     <Tabs variant="pill" defaultValue="neutral">
       <TabList aria-label="Badge variants">
         {badgeVariants.map((variant) => (
-          <Tab key={variant} value={variant} badge={{ label: "Badge", variant }}>
-            {variant.charAt(0).toUpperCase() + variant.slice(1)}
-          </Tab>
+          <Tab
+            key={variant}
+            value={variant}
+            label={variant.charAt(0).toUpperCase() + variant.slice(1)}
+            badge={{ label: "Badge", variant }}
+          />
         ))}
       </TabList>
       {badgeVariants.map((variant) => (
@@ -155,9 +157,7 @@ function ControlledExample({ onValueChange }: { onValueChange: (value: string) =
       <Tabs variant="pill" value={value} onValueChange={select}>
         <TabList aria-label="Controlled tabs">
           {options.map((option) => (
-            <Tab key={option} value={option}>
-              {option}
-            </Tab>
+            <Tab key={option} value={option} label={option} />
           ))}
         </TabList>
         {options.map((option) => (

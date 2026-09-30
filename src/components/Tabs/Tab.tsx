@@ -4,7 +4,7 @@ import styles from "./Tabs.module.scss";
 import type { TabProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
 
-export function Tab({ value, badge, className, children }: TabProps) {
+export function Tab({ value, label, badge, className }: TabProps) {
   const { variant, selectedValue, select, getTabId, getPanelId } = useTabsContext();
   const selected = selectedValue === value;
 
@@ -21,7 +21,7 @@ export function Tab({ value, badge, className, children }: TabProps) {
       onClick={() => select(value)}
       onFocus={() => select(value)}
     >
-      <span>{children}</span>
+      <span>{label}</span>
       {badge ? (
         <>
           {" "}

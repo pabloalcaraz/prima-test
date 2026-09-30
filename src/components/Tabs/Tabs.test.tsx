@@ -14,18 +14,17 @@ type RenderTabsOptions = {
 };
 
 function renderTabs(options: RenderTabsOptions = {}) {
-  const { onValueChange, withBadge } = options;
+  const { onValueChange = vi.fn(), withBadge } = options;
   const children = (
     <>
       <TabList aria-label="Inbox">
-        <Tab value="emails">Emails</Tab>
+        <Tab value="emails" label="Emails" />
         <Tab
           value="files"
+          label="Files"
           badge={withBadge ? { label: "Warning", variant: "negative" } : undefined}
-        >
-          Files
-        </Tab>
-        <Tab value="edits">Edits</Tab>
+        />
+        <Tab value="edits" label="Edits" />
       </TabList>
       <TabPanel value="emails">Emails panel</TabPanel>
       <TabPanel value="files">Files panel</TabPanel>
@@ -158,7 +157,7 @@ describe("Tabs", () => {
   it("throws a helpful error when a Tab is used outside Tabs", () => {
     const consoleError = vi.spyOn(console, "error").mockImplementation(() => {});
 
-    expect(() => render(<Tab value="lonely">Lonely</Tab>)).toThrow(
+    expect(() => render(<Tab value="lonely" label="Lonely" />)).toThrow(
       /must be rendered inside a <Tabs> root/,
     );
 

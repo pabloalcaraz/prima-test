@@ -4,12 +4,11 @@ import type { BadgeVariant } from "../Badge/Badge.types.ts";
 export type TabsVariant = "pill" | "underline";
 
 type TabsValueProps =
-  | { value: string; defaultValue?: never }
-  | { value?: never; defaultValue: string };
+  | { value: string; onValueChange: (value: string) => void; defaultValue?: never }
+  | { defaultValue: string; onValueChange?: (value: string) => void; value?: never };
 
 export type TabsProps = TabsValueProps & {
   variant?: TabsVariant;
-  onValueChange?: (value: string) => void;
   className?: string;
   children: ReactNode;
 };
@@ -30,9 +29,9 @@ export type TabBadge = {
 
 export type TabProps = {
   value: string;
+  label: string;
   badge?: TabBadge;
   className?: string;
-  children: ReactNode;
 };
 
 export type TabPanelProps = {
