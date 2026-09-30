@@ -3,13 +3,12 @@ import styles from "./Tabs.module.scss";
 import type { TabPanelProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
 
-export function TabPanel({ value, className, ...rest }: TabPanelProps) {
+export function TabPanel({ value, className, children }: TabPanelProps) {
   const { selectedValue, getTabId, getPanelId } = useTabsContext();
   const selected = selectedValue === value;
 
   return (
     <div
-      {...rest}
       role="tabpanel"
       id={getPanelId(value)}
       aria-labelledby={getTabId(value)}
@@ -17,6 +16,8 @@ export function TabPanel({ value, className, ...rest }: TabPanelProps) {
       tabIndex={0}
       hidden={!selected}
       className={cx(styles.panel, className)}
-    />
+    >
+      {children}
+    </div>
   );
 }

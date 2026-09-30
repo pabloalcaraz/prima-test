@@ -79,6 +79,7 @@ CSS custom properties can't be used inside a media query.
 | `value` | `string` | - | Selected tab, for controlled usage. Pair it with `onValueChange`. Excludes `defaultValue`. |
 | `defaultValue` | `string` | - | Initial tab, for uncontrolled usage. Excludes `value`. |
 | `onValueChange` | `(value: string) => void` | - | Called when the user selects a different tab. |
+| `className` | `string` | - | Extra class for the root element. |
 | `children` | `ReactNode` | - | `TabList` and `TabPanel` elements. |
 
 `value`/`defaultValue` are a discriminated union: TypeScript requires exactly
@@ -90,8 +91,10 @@ one of the two.
 | --- | --- | --- | --- |
 | `aria-label` | `string` | - | Accessible name for the tab list. Required unless `aria-labelledby` is set. |
 | `aria-labelledby` | `string` | - | Accessible name by reference. Required unless `aria-label` is set. |
+| `className` | `string` | - | Extra class for the tab list. |
+| `children` | `ReactNode` | - | `Tab` elements. |
 
-Plus native `div` props. Omitting both labeling props is a compile error.
+Omitting both labeling props is a compile error.
 
 ### `Tab`
 
@@ -100,28 +103,23 @@ Plus native `div` props. Omitting both labeling props is a compile error.
 | `value` | `string` | - | Links this tab to the `TabPanel` with the same value. |
 | `children` | `ReactNode` | - | Tab label. |
 | `badge` | `{ label: string; variant?: BadgeVariant }` | - | Renders a `Badge` after the label. |
-
-Plus native `button` props, minus the ones the component manages (`id`,
-`role`, `type`, `value`, `disabled`, `aria-selected`, `aria-controls`,
-`tabIndex`).
+| `className` | `string` | - | Extra class for the tab. |
 
 ### `TabPanel`
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `value` | `string` | - | Value of the `Tab` this panel belongs to. |
-
-Plus native `div` props, minus the managed ones (`id`, `role`,
-`aria-labelledby`, `tabIndex`, `hidden`).
+| `className` | `string` | - | Extra class for the panel. |
+| `children` | `ReactNode` | - | Panel content. |
 
 ### `Badge`
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `variant` | `"neutral" \| "positive" \| "negative"` | `"neutral"` | Background color. |
-| `children` | `ReactNode` | - | Label text. |
-
-Plus native `span` props.
+| `label` | `string` | - | Label text. Plain string only, so the badge always matches the design. |
+| `className` | `string` | - | Extra class for the badge. |
 
 ## Accessibility
 
@@ -170,6 +168,9 @@ is no other obvious way to reach hidden tabs.
 - **Named exports over `Tabs.List` dot notation.** `TabsProps` is a union
   (controlled vs uncontrolled), which is harder to read when attached to a
   namespace object.
+- **Explicit props only.** Components accept just the props they use plus
+  `className`, no native element props spread through. Anything else (`id`,
+  `style`, events, `ref`) is added when a real use case needs it.
 - **Only what is in Figma.** No Icon or Timer props (no visual spec), no
   disabled state, no vertical orientation, no manual activation.
 - **No Tailwind, no headless UI library**, as required by the brief. SCSS

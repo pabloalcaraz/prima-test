@@ -11,13 +11,10 @@ function focusTab(tabs: HTMLButtonElement[], index: number): void {
   tab.scrollIntoView({ block: "nearest", inline: "nearest" });
 }
 
-export function TabList({ className, onKeyDown, ...rest }: TabListProps) {
+export function TabList({ className, children, ...labelProps }: TabListProps) {
   const { variant } = useTabsContext();
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    onKeyDown?.(event);
-    if (event.defaultPrevented) return;
-
     const tabs = Array.from(
       event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
     );
@@ -49,11 +46,13 @@ export function TabList({ className, onKeyDown, ...rest }: TabListProps) {
 
   return (
     <div
-      {...rest}
+      {...labelProps}
       role="tablist"
       className={cx(styles.list, className)}
       data-variant={variant}
       onKeyDown={handleKeyDown}
-    />
+    >
+      {children}
+    </div>
   );
 }

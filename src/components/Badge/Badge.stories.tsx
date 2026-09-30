@@ -25,7 +25,7 @@ const meta = {
   },
   args: {
     variant: "neutral",
-    children: "Label",
+    label: "Label",
   },
 } satisfies Meta<typeof Badge>;
 
@@ -41,9 +41,11 @@ export const Variants: Story = {
   render: () => (
     <div className={styles.row}>
       {variants.map((variant) => (
-        <Badge key={variant} variant={variant}>
-          {variant.charAt(0).toUpperCase() + variant.slice(1)}
-        </Badge>
+        <Badge
+          key={variant}
+          variant={variant}
+          label={variant.charAt(0).toUpperCase() + variant.slice(1)}
+        />
       ))}
     </div>
   ),

@@ -5,12 +5,12 @@ import type { BadgeVariant } from "./Badge.types.ts";
 
 describe("Badge", () => {
   it("defaults to the neutral variant", () => {
-    render(<Badge>Label</Badge>);
+    render(<Badge label="Label" />);
     expect(screen.getByText("Label")).toHaveAttribute("data-variant", "neutral");
   });
 
   it.each<BadgeVariant>(["positive", "negative"])("applies the %s variant", (variant) => {
-    render(<Badge variant={variant}>Label</Badge>);
+    render(<Badge variant={variant} label="Label" />);
     expect(screen.getByText("Label")).toHaveAttribute("data-variant", variant);
   });
 });

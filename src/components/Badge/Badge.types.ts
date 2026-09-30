@@ -1,8 +1,7 @@
-import type { ComponentProps, ReactNode } from "react";
-
 export type BadgeVariant = "neutral" | "positive" | "negative";
 
-export type BadgeProps = Omit<ComponentProps<"span">, "children"> & {
+export type BadgeProps = {
   variant?: BadgeVariant;
-  children: ReactNode;
+  label: string;
+  className?: string;
 };
