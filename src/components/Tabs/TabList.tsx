@@ -1,5 +1,4 @@
 import type { KeyboardEvent } from "react";
-import { cx } from "../../utils/cx.ts";
 import styles from "./Tabs.module.scss";
 import type { TabListProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
@@ -11,7 +10,7 @@ function focusTab(tabs: HTMLButtonElement[], index: number): void {
   tab.scrollIntoView({ block: "nearest", inline: "nearest" });
 }
 
-export function TabList({ className, children, ...labelProps }: TabListProps) {
+export function TabList({ children, ...labelProps }: TabListProps) {
   const { variant } = useTabsContext();
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -48,7 +47,7 @@ export function TabList({ className, children, ...labelProps }: TabListProps) {
     <div
       {...labelProps}
       role="tablist"
-      className={cx(styles.list, className)}
+      className={styles.list}
       data-variant={variant}
       onKeyDown={handleKeyDown}
     >

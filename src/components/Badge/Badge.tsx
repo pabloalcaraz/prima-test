@@ -1,10 +1,9 @@
-import { cx } from "../../utils/cx.ts";
 import styles from "./Badge.module.scss";
 import type { BadgeProps } from "./Badge.types.ts";
 
-export function Badge({ variant = "neutral", label, className }: BadgeProps) {
+export function Badge({ variant = "neutral", label }: BadgeProps) {
   return (
-    <span className={cx(styles.badge, className)} data-variant={variant}>
+    <span className={styles.badge} data-variant={variant}>
       {label}
     </span>
   );

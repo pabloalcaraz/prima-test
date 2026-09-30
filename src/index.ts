@@ -1,3 +1,4 @@
+import "@fontsource-variable/inter";
 import "./styles/tokens.css";
 
 export { Badge } from "./components/Badge/Badge.tsx";

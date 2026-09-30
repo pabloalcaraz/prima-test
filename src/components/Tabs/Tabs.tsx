@@ -12,7 +12,6 @@ export function Tabs({
   value,
   defaultValue,
   onValueChange,
-  className,
   children,
 }: TabsProps) {
   const base = useId();
@@ -27,7 +26,7 @@ export function Tabs({
 
   return (
     <TabsContext.Provider value={{ variant, selectedValue, select, getTabId, getPanelId }}>
-      <div className={className}>{children}</div>
+      {children}
     </TabsContext.Provider>
   );
 }

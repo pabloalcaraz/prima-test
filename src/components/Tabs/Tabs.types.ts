@@ -17,7 +17,6 @@ type UncontrolledProps = {
 
 export type TabsProps = (ControlledProps | UncontrolledProps) & {
   variant?: TabsVariant;
-  className?: string;
   children: ReactNode;
 };
 
@@ -26,7 +25,6 @@ type AccessibleName =
   | { "aria-labelledby": string; "aria-label"?: never };
 
 export type TabListProps = AccessibleName & {
-  className?: string;
   children: ReactNode;
 };
 
@@ -39,12 +37,10 @@ export type TabProps = {
   value: string;
   label: string;
   badge?: TabBadge;
-  className?: string;
 };
 
 export type TabPanelProps = {
   value: string;
-  className?: string;
   children: ReactNode;
 };
 

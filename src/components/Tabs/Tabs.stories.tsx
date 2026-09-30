@@ -99,8 +99,8 @@ export const Playground: Story = {
           ))}
         </TabList>
         {visible.map((label) => (
-          <TabPanel key={label} value={label} className={styles.panel}>
-            {`${label} content`}
+          <TabPanel key={label} value={label}>
+            <div className={styles.panel}>{`${label} content`}</div>
           </TabPanel>
         ))}
       </Tabs>
@@ -123,8 +123,8 @@ export const BadgeVariants: Story = {
         ))}
       </TabList>
       {badgeVariants.map((variant) => (
-        <TabPanel key={variant} value={variant} className={styles.panel}>
-          {`Tab with a ${variant} badge`}
+        <TabPanel key={variant} value={variant}>
+          <div className={styles.panel}>{`Tab with a ${variant} badge`}</div>
         </TabPanel>
       ))}
     </Tabs>
@@ -161,8 +161,8 @@ function ControlledExample({ onValueChange }: { onValueChange: (value: string) =
           ))}
         </TabList>
         {options.map((option) => (
-          <TabPanel key={option} value={option} className={styles.panel}>
-            {`${option} content`}
+          <TabPanel key={option} value={option}>
+            <div className={styles.panel}>{`${option} content`}</div>
           </TabPanel>
         ))}
       </Tabs>

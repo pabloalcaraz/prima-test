@@ -1,5 +1,4 @@
-import "@fontsource-variable/inter";
-import "../src/styles/tokens.css";
+import "../src/index.ts";
 import "./preview.scss";
 
 import type { Preview } from "@storybook/react-vite";

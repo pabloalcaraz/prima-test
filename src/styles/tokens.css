@@ -1,49 +1,47 @@
-@layer ds {
-  :root {
-    /* Primitives: raw values, not used directly by components. */
-    --ds-palette-white: #ffffff;
-    --ds-palette-navy900: #1b2134;
-    --ds-palette-navy700: #343a4e;
-    --ds-palette-navy500: #585d71;
-    --ds-palette-gray50: #f6f6fa;
-    --ds-palette-gray100: #f1f1f7;
-    --ds-palette-gray300: #d3d3dc;
-    --ds-palette-gray400: #c4c5cf;
-    --ds-palette-green200: #b1ffc7;
-    --ds-palette-red200: #ffbfb1;
+:root {
+  /* Primitives: raw values, not used directly by components. */
+  --ds-palette-white: #ffffff;
+  --ds-palette-navy900: #1b2134;
+  --ds-palette-navy700: #343a4e;
+  --ds-palette-navy500: #585d71;
+  --ds-palette-gray50: #f6f6fa;
+  --ds-palette-gray100: #f1f1f7;
+  --ds-palette-gray300: #d3d3dc;
+  --ds-palette-gray400: #c4c5cf;
+  --ds-palette-green200: #b1ffc7;
+  --ds-palette-red200: #ffbfb1;
 
-    /* Semantic roles (names from Figma). Components only use these. */
-    --ds-color-inverse: var(--ds-palette-navy900);
-    --ds-color-inverse-hover: var(--ds-palette-navy700);
-    --ds-color-inverse-active: var(--ds-palette-navy500);
-    --ds-color-on-inverse: var(--ds-palette-white);
-    --ds-color-on-neutral: var(--ds-palette-navy900);
-    --ds-color-surface: var(--ds-palette-white);
-    --ds-color-surface-hover: var(--ds-palette-gray50);
-    --ds-color-surface-active: var(--ds-palette-gray100);
-    --ds-color-surface-high: var(--ds-palette-gray100);
-    --ds-color-surface-positive: var(--ds-palette-green200);
-    --ds-color-surface-negative: var(--ds-palette-red200);
-    --ds-color-outline: var(--ds-palette-gray300);
-    --ds-color-outline-hover: var(--ds-palette-gray400);
-    --ds-space-0: 0;
-    --ds-space-4xs: 0.125rem;
-    --ds-space-3xs: 0.25rem;
-    --ds-space-2xs: 0.5rem;
-    --ds-space-xs: 0.75rem;
-    --ds-space-s: 1rem;
-    --ds-space-m: 1.25rem;
-    --ds-space-l: 1.5rem;
-    --ds-space-xl: 2rem;
-    --ds-space-2xl: 3rem;
-    --ds-radius-2xs: 8px;
-    --ds-radius-xs: 12px;
-    --ds-radius-full: 100px;
-    --ds-font-family-base: "Inter Variable", "Inter", system-ui, sans-serif;
-    --ds-font-weight-bold: 700;
-    --ds-font-body-m-size: 0.875rem;
-    --ds-font-body-m-line-height: 1.5;
-    --ds-font-body-s-size: 0.75rem;
-    --ds-font-body-s-line-height: 1.5;
-  }
+  /* Semantic roles (names from Figma). Components only use these. */
+  --ds-color-inverse: var(--ds-palette-navy900);
+  --ds-color-inverse-hover: var(--ds-palette-navy700);
+  --ds-color-inverse-active: var(--ds-palette-navy500);
+  --ds-color-on-inverse: var(--ds-palette-white);
+  --ds-color-on-neutral: var(--ds-palette-navy900);
+  --ds-color-surface: var(--ds-palette-white);
+  --ds-color-surface-hover: var(--ds-palette-gray50);
+  --ds-color-surface-active: var(--ds-palette-gray100);
+  --ds-color-surface-high: var(--ds-palette-gray100);
+  --ds-color-surface-positive: var(--ds-palette-green200);
+  --ds-color-surface-negative: var(--ds-palette-red200);
+  --ds-color-outline: var(--ds-palette-gray300);
+  --ds-color-outline-hover: var(--ds-palette-gray400);
+  --ds-space-0: 0;
+  --ds-space-4xs: 0.125rem;
+  --ds-space-3xs: 0.25rem;
+  --ds-space-2xs: 0.5rem;
+  --ds-space-xs: 0.75rem;
+  --ds-space-s: 1rem;
+  --ds-space-m: 1.25rem;
+  --ds-space-l: 1.5rem;
+  --ds-space-xl: 2rem;
+  --ds-space-2xl: 3rem;
+  --ds-radius-2xs: 8px;
+  --ds-radius-xs: 12px;
+  --ds-radius-full: 100px;
+  --ds-font-family-base: "Inter Variable", "Inter", system-ui, sans-serif;
+  --ds-font-weight-bold: 700;
+  --ds-font-body-m-size: 0.875rem;
+  --ds-font-body-m-line-height: 1.5;
+  --ds-font-body-s-size: 0.75rem;
+  --ds-font-body-s-line-height: 1.5;
 }
