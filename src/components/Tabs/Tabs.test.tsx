@@ -6,12 +6,12 @@ import { TabList } from "./TabList.tsx";
 import { TabPanel } from "./TabPanel.tsx";
 import { Tabs } from "./Tabs.tsx";
 
-interface RenderTabsOptions {
+type RenderTabsOptions = {
   defaultValue?: string;
   value?: string;
   onValueChange?: (value: string) => void;
   withBadge?: boolean;
-}
+};
 
 function renderTabs(options: RenderTabsOptions = {}) {
   const { onValueChange, withBadge } = options;
@@ -47,9 +47,7 @@ function renderTabs(options: RenderTabsOptions = {}) {
   );
 }
 
-// Hidden panels are excluded from accessible-name computation, so they can't
-// be looked up with getByRole(..., { name }). Follow the tab's aria-controls
-// to the panel element instead, regardless of its current visibility.
+// Hidden panels have no accessible name, so they are found through aria-controls.
 function getPanelForTab(tabName: string): HTMLElement {
   const tab = screen.getByRole("tab", { name: tabName });
   const panelId = tab.getAttribute("aria-controls");

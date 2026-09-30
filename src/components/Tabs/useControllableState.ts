@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-interface UseControllableStateProps<T> {
+type UseControllableStateProps<T> = {
   value?: T;
   defaultValue?: T;
   onChange?: (value: T) => void;
-}
+};
 
 export function useControllableState<T>({
   value,
@@ -15,8 +15,6 @@ export function useControllableState<T>({
   const isControlled = value !== undefined;
   const current = isControlled ? (value as T) : internal;
 
-  // Focus and click both select a tab, so repeated selections of the current
-  // value are ignored to avoid firing onChange twice for a single interaction.
   const setState = (next: T) => {
     if (Object.is(next, current)) return;
     if (!isControlled) {

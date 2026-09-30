@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { fn } from "storybook/test";
-import type { BadgeVariant } from "../Badge/index.ts";
+import type { BadgeVariant } from "../Badge/Badge.types.ts";
 import { Tab } from "./Tab.tsx";
 import { TabList } from "./TabList.tsx";
 import { TabPanel } from "./TabPanel.tsx";
 import styles from "./Tabs.stories.module.scss";
-import { Tabs, type TabsVariant } from "./Tabs.tsx";
+import { Tabs } from "./Tabs.tsx";
+import type { TabsVariant } from "./Tabs.types.ts";
 
 const labels = ["Emails", "Files", "Edits", "Dashboard", "Messages", "Downloads", "Documents"];
 const badgeVariants: BadgeVariant[] = ["neutral", "positive", "negative"];
@@ -21,13 +22,13 @@ const keyboardTable = `
 | End | Moves focus to the last tab |
 `;
 
-interface PlaygroundArgs {
+type PlaygroundArgs = {
   variant: TabsVariant;
   tabCount: number;
   badge: boolean;
   badgeLabel: string;
   badgeVariant: BadgeVariant;
-}
+};
 
 const meta = {
   title: "Components/Tabs",
@@ -84,7 +85,6 @@ export const Playground: Story = {
   render: ({ variant, tabCount, badge, badgeLabel, badgeVariant }) => {
     const visible = labels.slice(0, tabCount);
     return (
-      // Remount when the tab set changes so the default selection always exists.
       <Tabs key={tabCount} variant={variant} defaultValue={visible[0]}>
         <TabList aria-label="Inbox">
           {visible.map((label, index) => (

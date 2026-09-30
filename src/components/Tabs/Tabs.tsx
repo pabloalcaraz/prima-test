@@ -1,30 +1,7 @@
-import type { ComponentProps, ReactNode } from "react";
 import { useId } from "react";
-import { TabsContext, type TabsVariant } from "./TabsContext.ts";
+import type { TabsProps } from "./Tabs.types.ts";
+import { TabsContext } from "./TabsContext.ts";
 import { useControllableState } from "./useControllableState.ts";
-
-export type { TabsVariant };
-
-type TabsValueProps =
-  | {
-      /** Selected tab value. Pass it together with `onValueChange` to control the component. */
-      value: string;
-      defaultValue?: never;
-    }
-  | {
-      value?: never;
-      /** Initially selected tab value when the component manages its own state. */
-      defaultValue: string;
-    };
-
-export type TabsProps = TabsValueProps &
-  Omit<ComponentProps<"div">, "value" | "defaultValue" | "ref"> & {
-    /** Visual style shared by every tab in the group. */
-    variant?: TabsVariant;
-    /** Called with the new value whenever the user selects a different tab. */
-    onValueChange?: (value: string) => void;
-    children: ReactNode;
-  };
 
 function sanitizeId(value: string): string {
   return value.replace(/\s+/g, "-");
@@ -41,7 +18,7 @@ export function Tabs({
   const base = useId();
   const [selectedValue, select] = useControllableState({
     value,
-    defaultValue: defaultValue ?? value,
+    defaultValue,
     onChange: onValueChange,
   });
 

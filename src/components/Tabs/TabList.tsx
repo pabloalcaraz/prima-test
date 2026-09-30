@@ -1,13 +1,8 @@
-import type { ComponentProps, KeyboardEvent } from "react";
+import type { KeyboardEvent } from "react";
 import { cx } from "../../utils/cx.ts";
 import styles from "./Tabs.module.scss";
+import type { TabListProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
-
-type AccessibleName =
-  | { "aria-label": string; "aria-labelledby"?: never }
-  | { "aria-labelledby": string; "aria-label"?: never };
-
-export type TabListProps = Omit<ComponentProps<"div">, "role"> & AccessibleName;
 
 function focusTab(tabs: HTMLButtonElement[], index: number): void {
   const tab = tabs[index];

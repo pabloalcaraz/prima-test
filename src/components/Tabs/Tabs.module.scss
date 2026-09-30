@@ -10,13 +10,10 @@
 .list {
   display: flex;
   overflow-x: auto;
-  // Room for the focus ring (2px + 2px offset) so overflow doesn't clip it.
+  // Keeps the focus ring (2px + 2px offset) from being clipped by overflow.
   padding: 4px;
   margin: -4px;
 
-  // Touch users swipe the list, so the scrollbar stays hidden there. With a
-  // mouse there is no other obvious way to reach overflowing tabs, so a thin
-  // one is shown instead.
   @media (pointer: coarse) {
     scrollbar-width: none;
 

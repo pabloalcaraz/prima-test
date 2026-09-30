@@ -1,14 +1,5 @@
 import { createContext, useContext } from "react";
-
-export type TabsVariant = "pill" | "underline";
-
-export interface TabsContextValue {
-  variant: TabsVariant;
-  selectedValue: string;
-  select: (value: string) => void;
-  getTabId: (value: string) => string;
-  getPanelId: (value: string) => string;
-}
+import type { TabsContextValue } from "./Tabs.types.ts";
 
 export const TabsContext = createContext<TabsContextValue | null>(null);
 

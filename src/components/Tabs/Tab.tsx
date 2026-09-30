@@ -1,36 +1,9 @@
-import type { ComponentProps, FocusEvent, MouseEvent, ReactNode } from "react";
+import type { FocusEvent, MouseEvent } from "react";
 import { cx } from "../../utils/cx.ts";
-import { Badge, type BadgeVariant } from "../Badge/index.ts";
+import { Badge } from "../Badge/Badge.tsx";
 import styles from "./Tabs.module.scss";
+import type { TabProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
-
-export interface TabBadge {
-  /** Badge text. It becomes part of the tab's accessible name. */
-  label: ReactNode;
-  /** Badge colour, `neutral` by default. */
-  variant?: BadgeVariant;
-}
-
-// Attributes that wire the tab to its panel and drive roving focus are owned by
-// the component, so they are removed from the public props.
-type ManagedTabProps =
-  | "id"
-  | "role"
-  | "type"
-  | "value"
-  | "disabled"
-  | "aria-selected"
-  | "aria-controls"
-  | "tabIndex";
-
-export type TabProps = Omit<ComponentProps<"button">, ManagedTabProps> & {
-  /** Unique value linking the tab to the `TabPanel` with the same value. */
-  value: string;
-  /** Tab label. */
-  children: ReactNode;
-  /** Optional badge shown after the label, e.g. `{ label: "Warning", variant: "negative" }`. */
-  badge?: TabBadge;
-};
 
 export function Tab({ value, children, badge, className, onClick, onFocus, ...rest }: TabProps) {
   const { variant, selectedValue, select, getTabId, getPanelId } = useTabsContext();

@@ -84,7 +84,7 @@ Plus native `div` props. Omitting both labeling props is a compile error.
 | --- | --- | --- | --- |
 | `value` | `string` | - | Links this tab to the `TabPanel` with the same value. |
 | `children` | `ReactNode` | - | Tab label. |
-| `badge` | `{ label: ReactNode; variant?: BadgeVariant }` | - | Renders a `Badge` after the label. |
+| `badge` | `{ label: string; variant?: BadgeVariant }` | - | Renders a `Badge` after the label. |
 
 Plus native `button` props, minus the ones the component manages (`id`,
 `role`, `type`, `value`, `disabled`, `aria-selected`, `aria-controls`,

@@ -1,14 +1,7 @@
-import type { ComponentProps } from "react";
 import { cx } from "../../utils/cx.ts";
 import styles from "./Tabs.module.scss";
+import type { TabPanelProps } from "./Tabs.types.ts";
 import { useTabsContext } from "./TabsContext.ts";
-
-type ManagedTabPanelProps = "id" | "role" | "aria-labelledby" | "tabIndex" | "hidden";
-
-export type TabPanelProps = Omit<ComponentProps<"div">, ManagedTabPanelProps> & {
-  /** Value of the `Tab` that shows this panel. */
-  value: string;
-};
 
 export function TabPanel({ value, className, ...rest }: TabPanelProps) {
   const { selectedValue, getTabId, getPanelId } = useTabsContext();

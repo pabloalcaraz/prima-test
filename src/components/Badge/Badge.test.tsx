@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Badge, type BadgeVariant } from "./Badge.tsx";
+import { Badge } from "./Badge.tsx";
+import type { BadgeVariant } from "./Badge.types.ts";
 
 describe("Badge", () => {
   it("defaults to the neutral variant", () => {
