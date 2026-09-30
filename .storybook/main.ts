@@ -9,20 +9,6 @@ const config: StorybookConfig = {
   },
   core: {
     disableTelemetry: true,
-    disableWhatsNewNotifications: true,
   },
-  features: {
-    sidebarOnboardingChecklist: false,
-    menuOnboardingChecklist: false,
-  },
-  viteFinal: (viteConfig) => ({
-    ...viteConfig,
-    server: {
-      ...viteConfig.server,
-      // The static build output lives in the project root; watching it while a
-      // build runs locks its files on Windows and crashes the dev server.
-      watch: { ...viteConfig.server?.watch, ignored: ["**/storybook-static/**"] },
-    },
-  }),
 };
 export default config;

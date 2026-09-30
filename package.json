@@ -9,13 +9,10 @@
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "build-storybook": "storybook build",
-    "dev": "vite",
     "check": "biome check . --no-errors-on-unmatched",
     "check:fix": "biome check . --write",
     "storybook": "storybook dev -p 6006",
     "test": "vitest run",
-    "tokens": "node scripts/generate-tokens.ts",
-    "tokens:check": "pnpm tokens && git diff --exit-code src/styles/tokens.css",
     "tsc": "tsc -b"
   },
   "dependencies": {

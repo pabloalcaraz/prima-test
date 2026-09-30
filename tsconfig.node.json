@@ -16,5 +16,5 @@
     "noUnusedParameters": true,
     "types": ["node"]
   },
-  "include": ["scripts", "vite.config.ts", "src/tokens"]
+  "include": ["vite.config.ts"]
 }

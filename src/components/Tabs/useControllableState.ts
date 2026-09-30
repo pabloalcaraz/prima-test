@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 interface UseControllableStateProps<T> {
   value?: T;
@@ -17,16 +17,13 @@ export function useControllableState<T>({
 
   // Focus and click both select a tab, so repeated selections of the current
   // value are ignored to avoid firing onChange twice for a single interaction.
-  const setState = useCallback(
-    (next: T) => {
-      if (Object.is(next, current)) return;
-      if (!isControlled) {
-        setInternal(next);
-      }
-      onChange?.(next);
-    },
-    [current, isControlled, onChange],
-  );
+  const setState = (next: T) => {
+    if (Object.is(next, current)) return;
+    if (!isControlled) {
+      setInternal(next);
+    }
+    onChange?.(next);
+  };
 
   return [current, setState];
 }

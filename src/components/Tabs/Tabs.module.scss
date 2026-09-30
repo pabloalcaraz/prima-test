@@ -5,10 +5,6 @@
     outline: 2px solid var(--ds-color-inverse);
     outline-offset: 2px;
   }
-
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
 }
 
 .list {
@@ -84,10 +80,6 @@
     --tab-badge-gap: var(--ds-space-3xs);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-  }
-
   @include focus-ring;
 }
 
@@ -143,10 +135,6 @@
     background-color: transparent;
     border-radius: var(--ds-radius-full);
     transition: background-color 150ms;
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
   }
 
   @media (hover: hover) {
