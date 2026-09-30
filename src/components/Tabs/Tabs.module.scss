@@ -1,154 +1,150 @@
 @use "../../styles/breakpoints" as *;
+@use "../../styles/focus";
 
-@mixin focus-ring {
-  &:focus-visible {
-    outline: 2px solid var(--ds-color-inverse);
-    outline-offset: 2px;
-  }
-}
+@layer ds {
+  .list {
+    display: flex;
+    overflow-x: auto;
+    // Keeps the focus ring from being clipped by overflow.
+    padding: focus.$ring-space;
+    margin: -(focus.$ring-space);
 
-.list {
-  display: flex;
-  overflow-x: auto;
-  // Keeps the focus ring (2px + 2px offset) from being clipped by overflow.
-  padding: 4px;
-  margin: -4px;
+    @media (pointer: coarse) {
+      scrollbar-width: none;
 
-  @media (pointer: coarse) {
-    scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
 
-    &::-webkit-scrollbar {
-      display: none;
+    @media (pointer: fine) {
+      scrollbar-width: thin;
+      scrollbar-color: var(--ds-color-outline) transparent;
+    }
+
+    &[data-variant="pill"] {
+      gap: var(--ds-space-xs);
+
+      @include mobile {
+        gap: var(--ds-space-2xs);
+      }
+    }
+
+    &[data-variant="underline"] {
+      gap: var(--ds-space-xl);
+
+      @include mobile {
+        gap: var(--ds-space-l);
+      }
     }
   }
 
-  @media (pointer: fine) {
-    scrollbar-width: thin;
-    scrollbar-color: var(--ds-color-outline) transparent;
-  }
+  .tab {
+    --tab-height: 3.125rem;
+    --tab-padding-inline: var(--ds-space-s);
+    --tab-badge-gap: var(--ds-space-2xs);
 
-  &[data-variant="pill"] {
-    gap: var(--ds-space-xs);
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--tab-badge-gap);
+    box-sizing: border-box;
+    height: var(--tab-height);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ds-color-on-neutral);
+    font-family: var(--ds-font-family-base);
+    font-size: var(--ds-font-body-m-size);
+    font-weight: var(--ds-font-weight-bold);
+    line-height: var(--ds-font-body-m-line-height);
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 150ms,
+      border-color 150ms,
+      color 150ms;
 
     @include mobile {
-      gap: var(--ds-space-2xs);
+      --tab-height: 2.625rem;
+      --tab-padding-inline: var(--ds-space-xs);
+      --tab-badge-gap: var(--ds-space-3xs);
     }
+
+    @include focus.ring;
   }
 
-  &[data-variant="underline"] {
-    gap: var(--ds-space-xl);
-
-    @include mobile {
-      gap: var(--ds-space-l);
-    }
-  }
-}
-
-.tab {
-  --tab-height: 3.125rem;
-  --tab-padding-inline: var(--ds-space-s);
-  --tab-badge-gap: var(--ds-space-2xs);
-
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--tab-badge-gap);
-  box-sizing: border-box;
-  height: var(--tab-height);
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--ds-color-on-neutral);
-  font-family: var(--ds-font-family-base);
-  font-size: var(--ds-font-body-m-size);
-  font-weight: var(--ds-font-weight-bold);
-  line-height: var(--ds-font-body-m-line-height);
-  white-space: nowrap;
-  cursor: pointer;
-  transition:
-    background-color 150ms,
-    border-color 150ms,
-    color 150ms;
-
-  @include mobile {
-    --tab-height: 2.625rem;
-    --tab-padding-inline: var(--ds-space-xs);
-    --tab-badge-gap: var(--ds-space-3xs);
-  }
-
-  @include focus-ring;
-}
-
-.tab[data-variant="pill"] {
-  padding-inline: var(--tab-padding-inline);
-  background-color: var(--ds-color-surface);
-  border: 1px solid var(--ds-color-outline);
-  border-radius: var(--ds-radius-full);
-
-  @media (hover: hover) {
-    &:hover {
-      background-color: var(--ds-color-surface-hover);
-      border-color: var(--ds-color-outline-hover);
-    }
-  }
-
-  &:active {
-    background-color: var(--ds-color-surface-active);
-    border-color: var(--ds-color-outline);
-  }
-
-  &[aria-selected="true"] {
-    background-color: var(--ds-color-inverse);
-    border-color: var(--ds-color-inverse);
-    color: var(--ds-color-on-inverse);
+  .tab[data-variant="pill"] {
+    padding-inline: var(--tab-padding-inline);
+    background-color: var(--ds-color-surface);
+    border: 1px solid var(--ds-color-outline);
+    border-radius: var(--ds-radius-full);
 
     @media (hover: hover) {
       &:hover {
-        background-color: var(--ds-color-inverse-hover);
-        border-color: var(--ds-color-inverse-hover);
+        background-color: var(--ds-color-surface-hover);
+        border-color: var(--ds-color-outline-hover);
       }
     }
 
     &:active {
-      background-color: var(--ds-color-inverse-active);
-      border-color: var(--ds-color-inverse-active);
+      background-color: var(--ds-color-surface-active);
+      border-color: var(--ds-color-outline);
+    }
+
+    &[aria-selected="true"] {
+      background-color: var(--ds-color-inverse);
+      border-color: var(--ds-color-inverse);
+      color: var(--ds-color-on-inverse);
+
+      @media (hover: hover) {
+        &:hover {
+          background-color: var(--ds-color-inverse-hover);
+          border-color: var(--ds-color-inverse-hover);
+        }
+      }
+
+      &:active {
+        background-color: var(--ds-color-inverse-active);
+        border-color: var(--ds-color-inverse-active);
+      }
     }
   }
-}
 
-.tab[data-variant="underline"] {
-  position: relative;
-  padding-inline: 0;
-  padding-block-end: 3px;
-  border-radius: var(--ds-radius-2xs);
+  .tab[data-variant="underline"] {
+    position: relative;
+    padding-inline: 0;
+    padding-block-end: 3px;
+    border-radius: var(--ds-radius-2xs);
 
-  &::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    bottom: 0;
-    height: 3px;
-    background-color: transparent;
-    border-radius: var(--ds-radius-full);
-    transition: background-color 150ms;
-  }
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline: 0;
+      bottom: 0;
+      height: 3px;
+      background-color: transparent;
+      border-radius: var(--ds-radius-full);
+      transition: background-color 150ms;
+    }
 
-  @media (hover: hover) {
-    &:hover::after {
+    @media (hover: hover) {
+      &:hover::after {
+        background-color: var(--ds-color-outline-hover);
+      }
+    }
+
+    &:active::after {
       background-color: var(--ds-color-outline-hover);
     }
+
+    &[aria-selected="true"]::after {
+      background-color: var(--ds-color-inverse);
+    }
   }
 
-  &:active::after {
-    background-color: var(--ds-color-outline-hover);
+  .panel {
+    @include focus.ring;
   }
-
-  &[aria-selected="true"]::after {
-    background-color: var(--ds-color-inverse);
-  }
-}
-
-.panel {
-  @include focus-ring;
 }

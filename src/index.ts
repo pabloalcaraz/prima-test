@@ -1,3 +1,5 @@
+import "./styles/tokens.css";
+
 export { Badge } from "./components/Badge/Badge.tsx";
 export type { BadgeProps, BadgeVariant } from "./components/Badge/Badge.types.ts";
 export { Tab } from "./components/Tabs/Tab.tsx";

@@ -1,0 +1,10 @@
+$ring-width: 2px;
+$ring-offset: 2px;
+$ring-space: $ring-width + $ring-offset;
+
+@mixin ring {
+  &:focus-visible {
+    outline: $ring-width solid var(--ds-color-inverse);
+    outline-offset: $ring-offset;
+  }
+}

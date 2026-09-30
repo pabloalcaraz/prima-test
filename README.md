@@ -25,12 +25,27 @@ pnpm build-storybook # static Storybook build (storybook-static/)
 
 ```
 src/
-  styles/        tokens.css, global reset, scss breakpoint mixin
+  styles/        tokens.css, breakpoint and focus ring mixins
   components/
     Badge/
     Tabs/
   index.ts       public exports
 ```
+
+## Usage
+
+```tsx
+import { Tab, TabList, TabPanel, Tabs } from "fe-interview-design-system";
+```
+
+The entry point imports `tokens.css`, so components are styled out of the
+box. The app loads the Inter font itself (for example with
+`@fontsource-variable/inter`); otherwise the system font is used.
+
+All styles live in a `ds` cascade layer. Any unlayered app CSS wins over it
+regardless of specificity, so a `className` passed to a component always
+overrides the defaults. Global resets count too: if the app has one, put it
+in a layer declared before `ds` (`@layer reset, ds;`).
 
 ## Design tokens
 
@@ -128,7 +143,8 @@ same way a click does.
 - **Badge text is part of the tab's accessible name** ("Files Warning"),
   since it is plain text inside the `button`.
 - **Focus ring** on `:focus-visible` only: 2px, `--ds-color-inverse`, 2px
-  offset. The tab list has 4px padding with a matching negative margin so
+  offset, from a shared mixin in `_focus.scss`. The tab list has padding
+  equal to ring + offset, with a matching negative margin, so
   `overflow-x: auto` doesn't clip it.
 - **Hover styles live in `@media (hover: hover)`**, so touch devices don't
   get a sticky hover after tapping.
